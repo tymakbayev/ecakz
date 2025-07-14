@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Header, Hero, Services, Technology, Features, Contact, Footer } from './components';
+import { Header, Hero, Products, Services, Clients, Testimonials, About, Contact, Footer, ChatBot, ConsultationModal } from './components';
 import './App.css';
 
 const Home = () => {
@@ -8,11 +8,15 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <Header />
       <Hero />
+      <Products />
       <Services />
-      <Technology />
-      <Features />
+      <Clients />
+      <Testimonials />
+      <About />
       <Contact />
       <Footer />
+      <ChatBot />
+      <ConsultationModal />
     </div>
   );
 };
