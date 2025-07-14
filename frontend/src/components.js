@@ -672,6 +672,7 @@ export const ChatBot = () => {
         className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
+        style={{ visibility: 'visible', display: 'flex' }}
       >
         <MessageCircle className="text-white" size={24} />
       </motion.button>
