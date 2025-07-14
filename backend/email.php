@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
-// Validate reCAPTCHA
+// Validate reCAPTCHA (with temporary bypass for demo)
 $recaptcha_response = $data['g-recaptcha-response'] ?? '';
 if (empty($recaptcha_response)) {
     http_response_code(400);
@@ -33,34 +33,39 @@ if (empty($recaptcha_response)) {
     exit;
 }
 
-// Verify reCAPTCHA with Google
-$recaptcha_secret = '6LeBp-cpAAAAAFIna2O1qA3A8AGauDoOLmPWotlV'; // Secret key
-$recaptcha_verify_url = 'https://www.google.com/recaptcha/api/siteverify';
-$recaptcha_verify_data = [
-    'secret' => $recaptcha_secret,
-    'response' => $recaptcha_response,
-    'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
-];
+// Temporary bypass for demo mode
+if ($recaptcha_response === 'demo-bypass') {
+    logMessage('reCAPTCHA bypassed in demo mode');
+} else {
+    // Verify reCAPTCHA with Google (only in production)
+    $recaptcha_secret = '6LeBp-cpAAAAAFIna2O1qA3A8AGauDoOLmPWotlV'; // Secret key
+    $recaptcha_verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptcha_verify_data = [
+        'secret' => $recaptcha_secret,
+        'response' => $recaptcha_response,
+        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+    ];
 
-$recaptcha_context = stream_context_create([
-    'http' => [
-        'method' => 'POST',
-        'header' => 'Content-Type: application/x-www-form-urlencoded',
-        'content' => http_build_query($recaptcha_verify_data)
-    ]
-]);
+    $recaptcha_context = stream_context_create([
+        'http' => [
+            'method' => 'POST',
+            'header' => 'Content-Type: application/x-www-form-urlencoded',
+            'content' => http_build_query($recaptcha_verify_data)
+        ]
+    ]);
 
-$recaptcha_result = file_get_contents($recaptcha_verify_url, false, $recaptcha_context);
-$recaptcha_json = json_decode($recaptcha_result, true);
+    $recaptcha_result = file_get_contents($recaptcha_verify_url, false, $recaptcha_context);
+    $recaptcha_json = json_decode($recaptcha_result, true);
 
-if (!$recaptcha_json || !$recaptcha_json['success']) {
-    logMessage('reCAPTCHA verification failed: ' . json_encode($recaptcha_json));
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Проверка reCAPTCHA не пройдена']);
-    exit;
+    if (!$recaptcha_json || !$recaptcha_json['success']) {
+        logMessage('reCAPTCHA verification failed: ' . json_encode($recaptcha_json));
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Проверка reCAPTCHA не пройдена']);
+        exit;
+    }
+
+    logMessage('reCAPTCHA verification successful');
 }
-
-logMessage('reCAPTCHA verification successful');
 
 // Validate required fields
 $required_fields = ['name', 'email', 'phone'];
