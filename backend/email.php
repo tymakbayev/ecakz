@@ -71,6 +71,19 @@ $product_names = [
 
 $product_name = $product_names[$product] ?? 'Общая консультация';
 
+// Include PHPMailer
+try {
+    require(__DIR__ . "/PHPMailer/PHPMailer.php");
+    require(__DIR__ . "/PHPMailer/SMTP.php");
+    require(__DIR__ . "/PHPMailer/Exception.php");
+    logMessage("PHPMailer files included successfully");
+} catch (Exception $e) {
+    logMessage("Error including PHPMailer: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Ошибка сервера']);
+    exit;
+}
+
 // Email configuration for demo (в продакшне использовать переменные окружения)
 $to_email = 'info@eca.kz';
 $from_email = 'noreply@eca.kz';
