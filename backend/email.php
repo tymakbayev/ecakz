@@ -12,16 +12,7 @@ logMessage("Script started");
 
 header('Content-Type: application/json');
 
-// Add CORS headers for development
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-// Handle preflight OPTIONS request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+// Remove CORS headers for security
 
 // Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -33,6 +24,43 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Get JSON input
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
+
+// Validate reCAPTCHA
+$recaptcha_response = $data['g-recaptcha-response'] ?? '';
+if (empty($recaptcha_response)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Пожалуйста, подтвердите, что вы не робот']);
+    exit;
+}
+
+// Verify reCAPTCHA with Google
+$recaptcha_secret = '6LeBp-cpAAAAAFIna2O1qA3A8AGauDoOLmPWotlV'; // Secret key
+$recaptcha_verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+$recaptcha_verify_data = [
+    'secret' => $recaptcha_secret,
+    'response' => $recaptcha_response,
+    'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+];
+
+$recaptcha_context = stream_context_create([
+    'http' => [
+        'method' => 'POST',
+        'header' => 'Content-Type: application/x-www-form-urlencoded',
+        'content' => http_build_query($recaptcha_verify_data)
+    ]
+]);
+
+$recaptcha_result = file_get_contents($recaptcha_verify_url, false, $recaptcha_context);
+$recaptcha_json = json_decode($recaptcha_result, true);
+
+if (!$recaptcha_json || !$recaptcha_json['success']) {
+    logMessage('reCAPTCHA verification failed: ' . json_encode($recaptcha_json));
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Проверка reCAPTCHA не пройдена']);
+    exit;
+}
+
+logMessage('reCAPTCHA verification successful');
 
 // Validate required fields
 $required_fields = ['name', 'email', 'phone'];
@@ -61,9 +89,18 @@ $product = htmlspecialchars(trim($data['product'] ?? 'general'));
 
 // Product names mapping
 $product_names = [
-    'omilia' => 'Omilia - Голосовые решения',
+    'omilia' => 'Omilia - Голосовые решения', 
     'evochat' => 'EvoChat - Чат-бот платформа',
     'geostatus' => 'GeoStatus - Геолокационные сервисы',
+    'evobot' => 'EvoBot - Робототехническая платформа',
+    'evomed' => 'EvoMed - Медицинская система',
+    'evoprompt' => 'EvoPrompt - AI-промпты',
+    'evosensus' => 'EvoSensus - IoT мониторинг',
+    'evoshell' => 'EvoShell - Командная строка',
+    'evotype' => 'EvoType - Распознавание текста',
+    'evologue' => 'EvoLogue - Логирование',
+    'campaignmanager' => 'Campaign Manager - Маркетинг',
+    'renata' => 'Renata - Персональный ассистент',
     'creatio' => 'Creatio - CRM система',
     'rpa' => 'RPA - Роботизация процессов',
     'general' => 'Общая консультация'
@@ -84,9 +121,17 @@ try {
     exit;
 }
 
-// Email configuration for demo (в продакшне использовать переменные окружения)
+// Initialize PHPMailer
+$mail = new PHPMailer\PHPMailer\PHPMailer(true);
+$mail->CharSet = 'UTF-8';
+
+// Email configuration
 $to_email = 'info@eca.kz';
 $from_email = 'noreply@eca.kz';
+$smtp_host = 'ssl://smtp.yandex.ru';
+$smtp_port = 465;
+$smtp_username = 'info@eca.kz';
+$smtp_password = 'Jrnz,hm03'; // В продакшене использовать переменные окружения
 
 // Create email subject and body
 $subject = "Новая заявка с сайта EvoTech - $product_name";
@@ -102,7 +147,7 @@ $email_body = "
         <h2 style='color: #2c3e50; text-align: center; margin-bottom: 30px;'>
             Новая заявка с сайта EvoTech
         </h2>
-
+        
         <table style='width: 100%; border-collapse: collapse;'>
             <tr>
                 <td style='padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; width: 30%;'>Имя:</td>
@@ -133,7 +178,7 @@ $email_body = "
                 <td style='padding: 10px;'>" . date('d.m.Y H:i:s') . "</td>
             </tr>
         </table>
-
+        
         <div style='margin-top: 30px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;'>
             <p style='margin: 0; font-size: 14px; color: #666;'>
                 Заявка отправлена с сайта EvoTech.kz
@@ -144,21 +189,51 @@ $email_body = "
 </html>
 ";
 
+// Email headers
+$headers = [
+    'MIME-Version: 1.0',
+    'Content-Type: text/html; charset=utf-8',
+    'From: EvoTech <' . $from_email . '>',
+    'Reply-To: ' . $email,
+    'X-Mailer: PHP/' . phpversion()
+];
+
 try {
-    // For development - just log the email (in production use actual email sending)
-    logMessage("SUCCESS: Email would be sent to $to_email from $name ($email) for product: $product_name");
+    // SMTP Configuration
+    $mail->isSMTP();
+    $mail->Host = 'smtp.yandex.ru';
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtp_username;
+    $mail->Password = $smtp_password;
+    $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port = $smtp_port;
     
-    // Simulate successful email sending
+    // Recipients
+    $mail->setFrom($from_email, 'EvoTech');
+    $mail->addAddress($to_email);
+    $mail->addReplyTo($email, $name);
+    
+    // Content
+    $mail->isHTML(true);
+    $mail->Subject = $subject;
+    $mail->Body = $email_body;
+    
+    // Send email
+    $mail->send();
+    
+    // Log successful submission
+    logMessage("SUCCESS: Email sent to $to_email from $name ($email)");
+    
     echo json_encode([
         'success' => true,
         'message' => 'Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.',
         'id' => uniqid('evo_', true)
     ]);
-
+    
 } catch (Exception $e) {
     // Log error
     logMessage("ERROR: Failed to send email - " . $e->getMessage());
-
+    
     http_response_code(500);
     echo json_encode([
         'success' => false,
