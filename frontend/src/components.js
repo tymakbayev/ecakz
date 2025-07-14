@@ -907,6 +907,7 @@ export const ConsultationModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -924,22 +925,33 @@ export const ConsultationModal = () => {
     setSubmitMessage('');
 
     try {
+      // Get reCAPTCHA token
+      const recaptchaElement = document.querySelector('.g-recaptcha textarea');
+      const recaptchaResponse = recaptchaElement ? recaptchaElement.value : '';
+      
+      if (!recaptchaResponse) {
+        setSubmitMessage('Пожалуйста, подтвердите, что вы не робот');
+        setIsSubmitting(false);
+        return;
+      }
+
       const product = window.currentProduct || 'general';
       
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact-direct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...formData,
-          product: product
+          product: product,
+          'g-recaptcha-response': recaptchaResponse
         }),
       });
 
       const result = await response.json();
 
-      if (response.ok) {
+      if (result.success) {
         setSubmitMessage(result.message || 'Сообщение успешно отправлено!');
         setFormData({
           name: '',
@@ -948,12 +960,16 @@ export const ConsultationModal = () => {
           phone: '',
           message: ''
         });
+        // Reset reCAPTCHA
+        if (window.grecaptcha) {
+          window.grecaptcha.reset();
+        }
         setTimeout(() => {
           setIsOpen(false);
           setSubmitMessage('');
         }, 3000);
       } else {
-        setSubmitMessage(result.detail || 'Произошла ошибка при отправке');
+        setSubmitMessage(result.message || 'Произошла ошибка при отправке');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -977,7 +993,7 @@ export const ConsultationModal = () => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            className="bg-white rounded-lg p-8 max-w-md w-full relative"
+            className="bg-white rounded-lg p-8 max-w-md w-full relative max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -1082,9 +1098,13 @@ export const ConsultationModal = () => {
                 />
               </div>
 
-              {/* reCAPTCHA placeholder */}
-              <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 text-center text-gray-500 text-sm">
-                reCAPTCHA (Отключена в demo режиме)
+              {/* reCAPTCHA */}
+              <div className="flex justify-center">
+                <div 
+                  className="g-recaptcha" 
+                  data-sitekey="6LeBp-cpAAAAAFaYhEYTyJCaiwpNLlRVcnMXnmjn"
+                  data-theme="light"
+                ></div>
               </div>
 
               {/* Buttons */}
