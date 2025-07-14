@@ -632,6 +632,12 @@ export const Contact = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (window.openConsultation) {
+                    window.openConsultation();
+                  }
+                }}
               >
                 НАПИСАТЬ НАМ
                 <Send size={20} />
