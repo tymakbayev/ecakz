@@ -10,6 +10,8 @@ from typing import List
 import uuid
 from datetime import datetime
 
+# Import our EvoTech API
+from app.api.evotech import router as evotech_router
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
