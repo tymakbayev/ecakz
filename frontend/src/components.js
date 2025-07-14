@@ -540,12 +540,36 @@ export const About = () => {
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
               Клиентоориентированность, подкрепленная экспертными знаниями и передовыми технологиями - наша характерная черта.
             </p>
-            <div className="bg-gradient-to-r from-pink-500/20 to-blue-500/20 rounded-lg p-4 inline-block">
+            <div className="bg-gradient-to-r from-pink-500/20 to-blue-500/20 rounded-lg p-4 inline-block mb-8">
               <p className="text-white font-semibold">
                 Участник Международного технопарка IT-стартапов "Astana Hub"
               </p>
             </div>
           </div>
+        </motion.div>
+
+        {/* Call to Action */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-center"
+        >
+          <h3 className="text-3xl font-bold text-white mb-4">
+            ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ
+          </h3>
+          <p className="text-gray-300 mb-8 text-lg">
+            Свяжитесь с нами для обсуждения вашего проекта
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => window.openConsultation && window.openConsultation()}
+            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-12 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto"
+          >
+            НАПИСАТЬ НАМ
+            <Send size={20} />
+          </motion.button>
         </motion.div>
       </div>
     </section>
