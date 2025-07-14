@@ -216,19 +216,22 @@ export const Products = () => {
       title: 'OMILIA',
       description: 'Интеллектуальный голосовой и текстовый ассистент, предназначенный для оптимизации процессов обслуживания клиентов путем предоставления сервисов самообслуживания',
       icon: <Bot size={40} />,
-      image: 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b'
+      image: '/assets/products/omilia.jpg', // Use local image from assets.zip
+      slug: 'omilia'
     },
     {
       title: 'EVOCHAT',
       description: 'Омниканальная чат-бот платформа для автоматизации коммуникации с клиентами посредством любых текстовых каналов, как с привлечением агентов, так и с помощью чат-ботов',
       icon: <MessageCircle size={40} />,
-      image: 'https://images.pexels.com/photos/15863066/pexels-photo-15863066.jpeg'
+      image: '/assets/products/evochat.jpg', // Use local image from assets.zip
+      slug: 'evochat'
     },
     {
       title: 'GEOSTATUS',
       description: 'Сервис предназначен для эффективного управления выездными задачами и процессами, а также учета рабочего времени с применением технологии геозонирования для сотрудников, осуществляющих работу на удаленном доступе.',
       icon: <MapPin size={40} />,
-      image: 'https://images.unsplash.com/photo-1660855552442-1bae49431379'
+      image: '/assets/products/geostatus.jpg', // Use local image from assets.zip
+      slug: 'geostatus'
     }
   ];
 
@@ -238,6 +241,13 @@ export const Products = () => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + products.length) % products.length);
+  };
+
+  const handleProductClick = (slug) => {
+    // Set product context for consultation form
+    window.currentProduct = slug;
+    // In a real app, you might navigate to a product detail page
+    console.log(`Product ${slug} clicked`);
   };
 
   return (
@@ -281,6 +291,7 @@ export const Products = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleProductClick(products[currentSlide].slug)}
                     className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto lg:mx-0"
                   >
                     ПОДРОБНЕЕ
@@ -295,6 +306,16 @@ export const Products = () => {
                       src={products[currentSlide].image}
                       alt={products[currentSlide].title}
                       className="w-full h-[400px] object-cover"
+                      onError={(e) => {
+                        // Fallback to external image if local image not found
+                        if (products[currentSlide].slug === 'omilia') {
+                          e.target.src = 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b';
+                        } else if (products[currentSlide].slug === 'evochat') {
+                          e.target.src = 'https://images.pexels.com/photos/15863066/pexels-photo-15863066.jpeg';
+                        } else if (products[currentSlide].slug === 'geostatus') {
+                          e.target.src = 'https://images.unsplash.com/photo-1660855552442-1bae49431379';
+                        }
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-blue-500/20" />
                   </div>
