@@ -215,17 +215,20 @@ export const Products = () => {
     {
       title: 'OMILIA',
       description: 'Интеллектуальный голосовой и текстовый ассистент, предназначенный для оптимизации процессов обслуживания клиентов путем предоставления сервисов самообслуживания',
-      icon: <Bot size={40} />
+      icon: <Bot size={40} />,
+      image: 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b'
     },
     {
       title: 'EVOCHAT',
       description: 'Омниканальная чат-бот платформа для автоматизации коммуникации с клиентами посредством любых текстовых каналов, как с привлечением агентов, так и с помощью чат-ботов',
-      icon: <MessageCircle size={40} />
+      icon: <MessageCircle size={40} />,
+      image: 'https://images.pexels.com/photos/15863066/pexels-photo-15863066.jpeg'
     },
     {
       title: 'GEOSTATUS',
       description: 'Сервис предназначен для эффективного управления выездными задачами и процессами, а также учета рабочего времени с применением технологии геозонирования для сотрудников, осуществляющих работу на удаленном доступе.',
-      icon: <MapPin size={40} />
+      icon: <MapPin size={40} />,
+      image: 'https://images.unsplash.com/photo-1660855552442-1bae49431379'
     }
   ];
 
@@ -238,26 +241,26 @@ export const Products = () => {
   };
 
   return (
-    <section id="products" className="py-20 bg-gradient-to-b from-slate-900 to-blue-900">
+    <section id="products" className="py-20 bg-gradient-to-b from-slate-900 to-blue-900 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="relative">
           {/* Navigation buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-colors"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-colors"
           >
             <ChevronLeft className="text-white" size={24} />
           </button>
           
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-colors"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-colors"
           >
             <ChevronRight className="text-white" size={24} />
           </button>
 
           {/* Product cards */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -265,25 +268,48 @@ export const Products = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
-                className="bg-gradient-to-br from-slate-800/50 to-blue-800/50 backdrop-blur-sm rounded-xl p-8 border border-pink-500/20 text-center"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[600px]"
               >
-                <div className="text-pink-500 mb-6 flex justify-center">
-                  {products[currentSlide].icon}
+                {/* Text Content */}
+                <div className="text-center lg:text-left">
+                  <h3 className="text-6xl md:text-7xl font-bold text-pink-500 mb-6">
+                    {products[currentSlide].title}
+                  </h3>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-8">
+                    {products[currentSlide].description}
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto lg:mx-0"
+                  >
+                    ПОДРОБНЕЕ
+                    <ArrowRight size={20} />
+                  </motion.button>
                 </div>
-                <h3 className="text-4xl font-bold text-white mb-6">
-                  {products[currentSlide].title}
-                </h3>
-                <p className="text-gray-300 text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
-                  {products[currentSlide].description}
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto"
-                >
-                  ПОДРОБНЕЕ
-                  <ArrowRight size={20} />
-                </motion.button>
+
+                {/* Image */}
+                <div className="relative">
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                    <img 
+                      src={products[currentSlide].image}
+                      alt={products[currentSlide].title}
+                      className="w-full h-[400px] object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-blue-500/20" />
+                  </div>
+                  
+                  {/* Floating Icon */}
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full flex items-center justify-center shadow-xl"
+                  >
+                    <div className="text-white">
+                      {products[currentSlide].icon}
+                    </div>
+                  </motion.div>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
