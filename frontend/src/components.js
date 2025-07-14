@@ -771,9 +771,23 @@ export const ChatBot = () => {
 // Consultation Modal Component
 export const ConsultationModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
 
   // This can be triggered by buttons
   window.openConsultation = () => setIsOpen(true);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log('Form submitted:', formData);
+    setIsOpen(false);
+  };
 
   return (
     <AnimatePresence>
@@ -782,55 +796,120 @@ export const ConsultationModal = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={() => setIsOpen(false)}
         >
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            className="bg-slate-800 rounded-lg p-8 max-w-md w-full"
+            className="bg-white rounded-lg p-8 max-w-md w-full relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-white">Консультация</h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X size={24} />
-              </button>
+            {/* Close button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Header */}
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-pink-500 mb-2">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ</h3>
             </div>
 
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Ваше имя"
-                className="w-full px-4 py-3 bg-slate-700 border border-pink-500/20 rounded-lg text-white placeholder-gray-400 focus:border-pink-500 focus:outline-none"
-              />
-              <input
-                type="email"
-                placeholder="Ваш email"
-                className="w-full px-4 py-3 bg-slate-700 border border-pink-500/20 rounded-lg text-white placeholder-gray-400 focus:border-pink-500 focus:outline-none"
-              />
-              <textarea
-                placeholder="Ваше сообщение"
-                rows={4}
-                className="w-full px-4 py-3 bg-slate-700 border border-pink-500/20 rounded-lg text-white placeholder-gray-400 focus:border-pink-500 focus:outline-none resize-none"
-              />
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  Ф.И.О. <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Введите ваше имя"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  КОМПАНИЯ
+                </label>
+                <input
+                  type="text"
+                  placeholder="Название компании"
+                  value={formData.company}
+                  onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    E-MAIL <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    ТЕЛЕФОН <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="+7 (___) ___-__-__"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                  СООБЩЕНИЕ
+                </label>
+                <textarea
+                  placeholder="Опишите ваш проект или задачу..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  rows={4}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors resize-none"
+                />
+              </div>
+
+              {/* reCAPTCHA placeholder */}
+              <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 text-center text-gray-500 text-sm">
+                reCAPTCHA
+              </div>
+
+              {/* Buttons */}
               <div className="flex gap-4">
                 <button
                   type="submit"
                   className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
                 >
-                  Отправить
+                  ОТПРАВИТЬ
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 bg-slate-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-500 transition-colors"
+                  className="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
                 >
-                  Отмена
+                  ЗАКРЫТЬ
                 </button>
               </div>
             </form>
