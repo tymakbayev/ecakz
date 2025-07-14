@@ -18,7 +18,7 @@ class ContactForm(BaseModel):
 @router.post("/contact")
 async def submit_contact_form(form_data: ContactForm):
     """
-    Handle contact form submission and send email via PHP script
+    Handle contact form submission via PHP email script
     """
     try:
         # Prepare data for PHP email script
@@ -28,27 +28,97 @@ async def submit_contact_form(form_data: ContactForm):
             "phone": form_data.phone,
             "company": form_data.company,
             "message": form_data.message,
-            "product": form_data.product
+            "product": form_data.product,
+            "g-recaptcha-response": form_data.recaptcha_response if hasattr(form_data, 'recaptcha_response') else ""
         }
         
-        # In development, just log the submission
-        print(f"[{datetime.now()}] Contact form submission:")
-        print(f"Name: {form_data.name}")
-        print(f"Email: {form_data.email}")
-        print(f"Phone: {form_data.phone}")
-        print(f"Company: {form_data.company}")
-        print(f"Product: {form_data.product}")
-        print(f"Message: {form_data.message}")
+        # Call PHP email script directly
+        import subprocess
+        import tempfile
+        import os
         
-        return {
-            "success": True,
-            "message": "Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.",
-            "id": f"evo_{int(datetime.now().timestamp())}"
-        }
+        # Create temporary JSON file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tmp_file:
+            json.dump(php_data, tmp_file)
+            tmp_file_path = tmp_file.name
+        
+        try:
+            # Execute PHP script
+            result = subprocess.run([
+                'php', '-f', '/app/backend/email.php'
+            ], 
+            input=json.dumps(php_data), 
+            text=True, 
+            capture_output=True, 
+            timeout=30,
+            env={**os.environ, 'REQUEST_METHOD': 'POST'}
+            )
+            
+            if result.returncode == 0:
+                # Parse PHP response
+                try:
+                    response = json.loads(result.stdout)
+                    return response
+                except json.JSONDecodeError:
+                    return {"success": False, "message": "Ошибка обработки ответа"}
+            else:
+                print(f"PHP script error: {result.stderr}")
+                return {"success": False, "message": "Ошибка отправки email"}
+                
+        finally:
+            # Clean up temporary file
+            if os.path.exists(tmp_file_path):
+                os.unlink(tmp_file_path)
         
     except Exception as e:
-        print(f"Error submitting contact form: {e}")
-        raise HTTPException(status_code=500, detail="Произошла ошибка при отправке сообщения")
+        print(f"Error calling PHP email script: {e}")
+        return {"success": False, "message": "Произошла ошибка при отправке сообщения"}
+
+@router.post("/contact-direct")
+async def submit_contact_direct(request: Request):
+    """
+    Direct PHP email handler
+    """
+    try:
+        # Get form data
+        form_data = await request.json()
+        
+        # Forward to PHP script
+        php_script_path = '/app/backend/email.php'
+        
+        # Execute PHP script with POST data
+        import subprocess
+        import os
+        
+        # Set environment variables for PHP
+        env = os.environ.copy()
+        env['REQUEST_METHOD'] = 'POST'
+        env['CONTENT_TYPE'] = 'application/json'
+        
+        # Execute PHP script
+        result = subprocess.run([
+            'php', php_script_path
+        ], 
+        input=json.dumps(form_data), 
+        text=True, 
+        capture_output=True, 
+        timeout=30,
+        env=env
+        )
+        
+        if result.returncode == 0:
+            try:
+                response = json.loads(result.stdout)
+                return response
+            except json.JSONDecodeError:
+                return {"success": False, "message": "Invalid response from email service"}
+        else:
+            print(f"PHP Error: {result.stderr}")
+            return {"success": False, "message": "Email service error"}
+            
+    except Exception as e:
+        print(f"Error in direct PHP handler: {e}")
+        return {"success": False, "message": "Internal server error"}
 
 @router.get("/products/{product_name}")
 async def get_product_info(product_name: str):
