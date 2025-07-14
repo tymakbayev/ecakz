@@ -816,6 +816,8 @@ export const ChatBot = () => {
 // Consultation Modal Component
 export const ConsultationModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -827,11 +829,49 @@ export const ConsultationModal = () => {
   // This can be triggered by buttons
   window.openConsultation = () => setIsOpen(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    setIsOpen(false);
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      const product = window.currentProduct || 'general';
+      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          product: product
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSubmitMessage(result.message || 'Сообщение успешно отправлено!');
+        setFormData({
+          name: '',
+          company: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
+        setTimeout(() => {
+          setIsOpen(false);
+          setSubmitMessage('');
+        }, 3000);
+      } else {
+        setSubmitMessage(result.detail || 'Произошла ошибка при отправке');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitMessage('Произошла ошибка при отправке сообщения');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -855,6 +895,7 @@ export const ConsultationModal = () => {
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              disabled={isSubmitting}
             >
               <X size={24} />
             </button>
@@ -863,6 +904,17 @@ export const ConsultationModal = () => {
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-pink-500 mb-2">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ</h3>
             </div>
+
+            {/* Success/Error Message */}
+            {submitMessage && (
+              <div className={`mb-4 p-3 rounded-lg text-center ${
+                submitMessage.includes('успешно') 
+                  ? 'bg-green-100 text-green-700' 
+                  : 'bg-red-100 text-red-700'
+              }`}>
+                {submitMessage}
+              </div>
+            )}
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -877,6 +929,7 @@ export const ConsultationModal = () => {
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -890,6 +943,7 @@ export const ConsultationModal = () => {
                   value={formData.company}
                   onChange={(e) => setFormData({...formData, company: e.target.value})}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -905,6 +959,7 @@ export const ConsultationModal = () => {
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
 
@@ -919,6 +974,7 @@ export const ConsultationModal = () => {
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
               </div>
@@ -933,26 +989,29 @@ export const ConsultationModal = () => {
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
                   rows={4}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none transition-colors resize-none"
+                  disabled={isSubmitting}
                 />
               </div>
 
               {/* reCAPTCHA placeholder */}
               <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 text-center text-gray-500 text-sm">
-                reCAPTCHA
+                reCAPTCHA (Отключена в demo режиме)
               </div>
 
               {/* Buttons */}
               <div className="flex gap-4">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  ОТПРАВИТЬ
+                  {isSubmitting ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors disabled:opacity-50"
                 >
                   ЗАКРЫТЬ
                 </button>
