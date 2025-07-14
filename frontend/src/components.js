@@ -216,22 +216,85 @@ export const Products = () => {
       title: 'OMILIA',
       description: 'Интеллектуальный голосовой и текстовый ассистент, предназначенный для оптимизации процессов обслуживания клиентов путем предоставления сервисов самообслуживания',
       icon: <Bot size={40} />,
-      image: '/assets/products/omilia.jpg', // Use local image from assets.zip
+      image: '/assets/products/omilia.jpg',
       slug: 'omilia'
     },
     {
       title: 'EVOCHAT',
       description: 'Омниканальная чат-бот платформа для автоматизации коммуникации с клиентами посредством любых текстовых каналов, как с привлечением агентов, так и с помощью чат-ботов',
       icon: <MessageCircle size={40} />,
-      image: '/assets/products/evochat.jpg', // Use local image from assets.zip
+      image: '/assets/products/evochat.jpg',
       slug: 'evochat'
     },
     {
       title: 'GEOSTATUS',
       description: 'Сервис предназначен для эффективного управления выездными задачами и процессами, а также учета рабочего времени с применением технологии геозонирования для сотрудников, осуществляющих работу на удаленном доступе.',
       icon: <MapPin size={40} />,
-      image: '/assets/products/geostatus.jpg', // Use local image from assets.zip
+      image: '/assets/products/geostatus.jpg',
       slug: 'geostatus'
+    },
+    {
+      title: 'EVOBOT',
+      description: 'Интеллектуальная робототехническая платформа для автоматизации бизнес-процессов и выполнения рутинных задач',
+      icon: <Settings size={40} />,
+      image: '/assets/products/evobot.jpg',
+      slug: 'evobot'
+    },
+    {
+      title: 'EVOMED',
+      description: 'Медицинская информационная система для управления медицинскими учреждениями и пациентами',
+      icon: <Shield size={40} />,
+      image: '/assets/products/evomed.jpg',
+      slug: 'evomed'
+    },
+    {
+      title: 'EVOPROMPT',
+      description: 'Система управления промптами и AI-ассистентами для оптимизации работы с искусственным интеллектом',
+      icon: <Zap size={40} />,
+      image: '/assets/products/evoprompt.jpg',
+      slug: 'evoprompt'
+    },
+    {
+      title: 'EVOSENSUS',
+      description: 'Система сенсорного мониторинга и анализа данных для IoT устройств и промышленных решений',
+      icon: <BarChart3 size={40} />,
+      image: '/assets/products/evosensus.jpg',
+      slug: 'evosensus'
+    },
+    {
+      title: 'EVOSHELL',
+      description: 'Интерфейс командной строки и система управления серверами для IT администраторов',
+      icon: <FileText size={40} />,
+      image: '/assets/products/evoshell.jpg',
+      slug: 'evoshell'
+    },
+    {
+      title: 'EVOTYPE',
+      description: 'Система распознавания и анализа текста с поддержкой машинного обучения',
+      icon: <Users size={40} />,
+      image: '/assets/products/evotype.jpg',
+      slug: 'evotype'
+    },
+    {
+      title: 'EVOLOGUE',
+      description: 'Система логирования и мониторинга приложений для анализа производительности',
+      icon: <Clock size={40} />,
+      image: '/assets/products/evologue.jpg',
+      slug: 'evologue'
+    },
+    {
+      title: 'CAMPAIGN MANAGER',
+      description: 'Система управления маркетинговыми кампаниями и анализа эффективности рекламы',
+      icon: <Target size={40} />,
+      image: '/assets/products/campaignmanager.jpg',
+      slug: 'campaignmanager'
+    },
+    {
+      title: 'RENATA',
+      description: 'Персональный AI-ассистент для управления задачами и повышения продуктивности',
+      icon: <Globe size={40} />,
+      image: '/assets/products/renata.jpg',
+      slug: 'renata'
     }
   ];
 
@@ -246,13 +309,29 @@ export const Products = () => {
   const handleProductClick = (slug) => {
     // Set product context for consultation form
     window.currentProduct = slug;
-    // In a real app, you might navigate to a product detail page
-    console.log(`Product ${slug} clicked`);
+    // Open consultation modal
+    if (window.openConsultation) {
+      window.openConsultation();
+    }
   };
 
   return (
     <section id="products" className="py-20 bg-gradient-to-b from-slate-900 to-blue-900 relative overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            НАШИ <span className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">ПРОДУКТЫ</span>
+          </h2>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Инновационные IT-решения для различных отраслей
+          </p>
+        </motion.div>
+
         <div className="relative">
           {/* Navigation buttons */}
           <button
@@ -308,12 +387,15 @@ export const Products = () => {
                       className="w-full h-[400px] object-cover"
                       onError={(e) => {
                         // Fallback to external image if local image not found
+                        console.log(`Failed to load image for ${products[currentSlide].slug}`);
                         if (products[currentSlide].slug === 'omilia') {
                           e.target.src = 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b';
                         } else if (products[currentSlide].slug === 'evochat') {
                           e.target.src = 'https://images.pexels.com/photos/15863066/pexels-photo-15863066.jpeg';
                         } else if (products[currentSlide].slug === 'geostatus') {
                           e.target.src = 'https://images.unsplash.com/photo-1660855552442-1bae49431379';
+                        } else {
+                          e.target.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af2176';
                         }
                       }}
                     />
@@ -336,16 +418,23 @@ export const Products = () => {
           </div>
 
           {/* Indicators */}
-          <div className="flex justify-center space-x-2 mt-8">
+          <div className="flex justify-center space-x-2 mt-8 flex-wrap">
             {products.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                className={`w-3 h-3 rounded-full transition-colors m-1 ${
                   index === currentSlide ? 'bg-pink-500' : 'bg-white/30'
                 }`}
               />
             ))}
+          </div>
+
+          {/* Product counter */}
+          <div className="text-center mt-4">
+            <span className="text-white/60 text-sm">
+              {currentSlide + 1} / {products.length}
+            </span>
           </div>
         </div>
       </div>
