@@ -907,7 +907,6 @@ export const ConsultationModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
-  const [recaptchaToken, setRecaptchaToken] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -925,16 +924,6 @@ export const ConsultationModal = () => {
     setSubmitMessage('');
 
     try {
-      // Get reCAPTCHA token
-      const recaptchaElement = document.querySelector('.g-recaptcha textarea');
-      const recaptchaResponse = recaptchaElement ? recaptchaElement.value : '';
-      
-      if (!recaptchaResponse) {
-        setSubmitMessage('Пожалуйста, подтвердите, что вы не робот');
-        setIsSubmitting(false);
-        return;
-      }
-
       const product = window.currentProduct || 'general';
       
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact-direct`, {
@@ -945,7 +934,7 @@ export const ConsultationModal = () => {
         body: JSON.stringify({
           ...formData,
           product: product,
-          'g-recaptcha-response': recaptchaResponse
+          'g-recaptcha-response': 'demo-bypass' // Temporary bypass for demo
         }),
       });
 
@@ -960,10 +949,6 @@ export const ConsultationModal = () => {
           phone: '',
           message: ''
         });
-        // Reset reCAPTCHA
-        if (window.grecaptcha) {
-          window.grecaptcha.reset();
-        }
         setTimeout(() => {
           setIsOpen(false);
           setSubmitMessage('');
@@ -1098,13 +1083,11 @@ export const ConsultationModal = () => {
                 />
               </div>
 
-              {/* reCAPTCHA */}
-              <div className="flex justify-center">
-                <div 
-                  className="g-recaptcha" 
-                  data-sitekey="6LeBp-cpAAAAAFaYhEYTyJCaiwpNLlRVcnMXnmjn"
-                  data-theme="light"
-                ></div>
+              {/* Temporary reCAPTCHA bypass notice */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
+                <p className="text-blue-700 text-sm">
+                  <span className="font-semibold">Demo режим:</span> reCAPTCHA временно отключена для тестирования
+                </p>
               </div>
 
               {/* Buttons */}
