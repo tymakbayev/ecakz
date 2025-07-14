@@ -101,3 +101,147 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Протестируйте новый сайт EVOTECH CENTRAL ASIA на https://459eb95e-546b-4cfc-82dc-5d125dd173af.preview.emergentagent.com с особым вниманием к навигационным элементам, кнопкам, интерактивным элементам, специальным компонентам и функциональности форм"
+
+frontend:
+  - task: "Header Navigation Menu"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test menu items (УСЛУГИ, КЛИЕНТЫ, ПРОДУКТЫ, КАРЬЕРА, КОНТАКТЫ) and anchor link functionality"
+
+  - task: "Language Switchers"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test RUS/ENG/ҚАЗ language switchers functionality"
+
+  - task: "Mobile Burger Menu"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test mobile menu toggle and navigation"
+
+  - task: "Product Slider with Navigation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test OMILIA, EVOCHAT, GEOSTATUS slider with navigation buttons and indicators"
+
+  - task: "Product Detail Buttons"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test ПОДРОБНЕЕ buttons in product sections"
+
+  - task: "Testimonials Document Buttons"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test ПРОСМОТРЕТЬ ДОКУМЕНТ buttons in testimonials section"
+
+  - task: "ChatBot Component"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test chat bot in bottom right corner, minimize/maximize functionality"
+
+  - task: "Consultation Modal"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test consultation modal functionality"
+
+  - task: "Contact Form"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ form and НАПИСАТЬ НАМ button"
+
+  - task: "Responsive Design"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing setup - need to test responsive design on different screen sizes"
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+
+test_plan:
+  current_focus:
+    - "Header Navigation Menu"
+    - "Language Switchers"
+    - "Product Slider with Navigation"
+    - "Product Detail Buttons"
+    - "ChatBot Component"
+    - "Contact Form"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: "Initial test structure created. Starting comprehensive testing of EVOTECH CENTRAL ASIA website focusing on navigation, interactive elements, and forms as requested."
