@@ -209,114 +209,114 @@ export const Hero = () => {
 
 // Products Component
 export const Products = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   const products = [
     {
       title: 'OMILIA',
-      description: 'Интеллектуальный голосовой и текстовый ассистент, предназначенный для оптимизации процессов обслуживания клиентов путем предоставления сервисов самообслуживания',
-      icon: <Bot size={40} />,
+      description: 'Интеллектуальный голосовой и текстовый ассистент для оптимизации обслуживания клиентов',
+      icon: <Bot size={32} />,
       image: '/assets/products/omilia.jpg',
-      slug: 'omilia'
+      slug: 'omilia',
+      category: 'AI & ML'
     },
     {
       title: 'EVOCHAT',
-      description: 'Омниканальная чат-бот платформа для автоматизации коммуникации с клиентами посредством любых текстовых каналов, как с привлечением агентов, так и с помощью чат-ботов',
-      icon: <MessageCircle size={40} />,
+      description: 'Омниканальная чат-бот платформа для автоматизации коммуникации с клиентами',
+      icon: <MessageCircle size={32} />,
       image: '/assets/products/evochat.jpg',
-      slug: 'evochat'
+      slug: 'evochat',
+      category: 'Коммуникации'
     },
     {
       title: 'GEOSTATUS',
-      description: 'Сервис предназначен для эффективного управления выездными задачами и процессами, а также учета рабочего времени с применением технологии геозонирования для сотрудников, осуществляющих работу на удаленном доступе.',
-      icon: <MapPin size={40} />,
+      description: 'Управление выездными задачами и учет рабочего времени с геозонированием',
+      icon: <MapPin size={32} />,
       image: '/assets/products/geostatus.jpg',
-      slug: 'geostatus'
+      slug: 'geostatus',
+      category: 'Геолокация'
     },
     {
       title: 'EVOBOT',
-      description: 'Интеллектуальная робототехническая платформа для автоматизации бизнес-процессов и выполнения рутинных задач',
-      icon: <Settings size={40} />,
+      description: 'Робототехническая платформа для автоматизации бизнес-процессов',
+      icon: <Settings size={32} />,
       image: '/assets/products/evobot.jpg',
-      slug: 'evobot'
+      slug: 'evobot',
+      category: 'Автоматизация'
     },
     {
       title: 'EVOMED',
-      description: 'Медицинская информационная система для управления медицинскими учреждениями и пациентами',
-      icon: <Shield size={40} />,
+      description: 'Медицинская информационная система для управления медучреждениями',
+      icon: <Shield size={32} />,
       image: '/assets/products/evomed.jpg',
-      slug: 'evomed'
+      slug: 'evomed',
+      category: 'Медицина'
     },
     {
       title: 'EVOPROMPT',
-      description: 'Система управления промптами и AI-ассистентами для оптимизации работы с искусственным интеллектом',
-      icon: <Zap size={40} />,
+      description: 'Система управления AI-промптами для оптимизации ИИ',
+      icon: <Zap size={32} />,
       image: '/assets/products/evoprompt.jpg',
-      slug: 'evoprompt'
+      slug: 'evoprompt',
+      category: 'AI & ML'
     },
     {
       title: 'EVOSENSUS',
-      description: 'Система сенсорного мониторинга и анализа данных для IoT устройств и промышленных решений',
-      icon: <BarChart3 size={40} />,
+      description: 'Сенсорный мониторинг и анализ данных для IoT устройств',
+      icon: <BarChart3 size={32} />,
       image: '/assets/products/evosensus.jpg',
-      slug: 'evosensus'
+      slug: 'evosensus',
+      category: 'IoT'
     },
     {
       title: 'EVOSHELL',
-      description: 'Интерфейс командной строки и система управления серверами для IT администраторов',
-      icon: <FileText size={40} />,
+      description: 'Интерфейс командной строки и управление серверами',
+      icon: <FileText size={32} />,
       image: '/assets/products/evoshell.jpg',
-      slug: 'evoshell'
+      slug: 'evoshell',
+      category: 'DevOps'
     },
     {
       title: 'EVOTYPE',
-      description: 'Система распознавания и анализа текста с поддержкой машинного обучения',
-      icon: <Users size={40} />,
+      description: 'Распознавание и анализ текста с машинным обучением',
+      icon: <Users size={32} />,
       image: '/assets/products/evotype.jpg',
-      slug: 'evotype'
+      slug: 'evotype',
+      category: 'AI & ML'
     },
     {
       title: 'EVOLOGUE',
-      description: 'Система логирования и мониторинга приложений для анализа производительности',
-      icon: <Clock size={40} />,
+      description: 'Логирование и мониторинг приложений для анализа',
+      icon: <Clock size={32} />,
       image: '/assets/products/evologue.jpg',
-      slug: 'evologue'
+      slug: 'evologue',
+      category: 'Мониторинг'
     },
     {
       title: 'CAMPAIGN MANAGER',
-      description: 'Система управления маркетинговыми кампаниями и анализа эффективности рекламы',
-      icon: <Target size={40} />,
+      description: 'Управление маркетинговыми кампаниями и анализ эффективности',
+      icon: <Target size={32} />,
       image: '/assets/products/campaignmanager.jpg',
-      slug: 'campaignmanager'
+      slug: 'campaignmanager',
+      category: 'Маркетинг'
     },
     {
       title: 'RENATA',
-      description: 'Персональный AI-ассистент для управления задачами и повышения продуктивности',
-      icon: <Globe size={40} />,
+      description: 'Персональный AI-ассистент для управления задачами',
+      icon: <Globe size={32} />,
       image: '/assets/products/renata.jpg',
-      slug: 'renata'
+      slug: 'renata',
+      category: 'AI & ML'
     }
   ];
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % products.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + products.length) % products.length);
-  };
-
   const handleProductClick = (slug) => {
-    // Set product context for consultation form
     window.currentProduct = slug;
-    // Open consultation modal
     if (window.openConsultation) {
       window.openConsultation();
     }
   };
 
   return (
-    <section id="products" className="py-20 bg-gradient-to-b from-slate-900 to-blue-900 relative overflow-hidden">
+    <section id="products" className="py-20 bg-gradient-to-b from-slate-900 to-blue-900">
       <div className="container mx-auto px-4 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -332,110 +332,58 @@ export const Products = () => {
           </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Navigation buttons */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-colors"
-          >
-            <ChevronLeft className="text-white" size={24} />
-          </button>
-          
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 transition-colors"
-          >
-            <ChevronRight className="text-white" size={24} />
-          </button>
-
-          {/* Product cards */}
-          <div className="max-w-7xl mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[600px]"
-              >
-                {/* Text Content */}
-                <div className="text-center lg:text-left">
-                  <h3 className="text-6xl md:text-7xl font-bold text-pink-500 mb-6">
-                    {products[currentSlide].title}
-                  </h3>
-                  <p className="text-gray-300 text-lg leading-relaxed mb-8">
-                    {products[currentSlide].description}
-                  </p>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleProductClick(products[currentSlide].slug)}
-                    className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 mx-auto lg:mx-0"
-                  >
-                    ПОДРОБНЕЕ
-                    <ArrowRight size={20} />
-                  </motion.button>
-                </div>
-
-                {/* Image */}
-                <div className="relative">
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                    <img 
-                      src={products[currentSlide].image}
-                      alt={products[currentSlide].title}
-                      className="w-full h-[400px] object-cover"
-                      onError={(e) => {
-                        // Fallback to external image if local image not found
-                        console.log(`Failed to load image for ${products[currentSlide].slug}`);
-                        if (products[currentSlide].slug === 'omilia') {
-                          e.target.src = 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b';
-                        } else if (products[currentSlide].slug === 'evochat') {
-                          e.target.src = 'https://images.pexels.com/photos/15863066/pexels-photo-15863066.jpeg';
-                        } else if (products[currentSlide].slug === 'geostatus') {
-                          e.target.src = 'https://images.unsplash.com/photo-1660855552442-1bae49431379';
-                        } else {
-                          e.target.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af2176';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-blue-500/20" />
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {products.map((product, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05, y: -10 }}
+              className="bg-gradient-to-br from-slate-800/50 to-blue-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300 group cursor-pointer"
+              onClick={() => handleProductClick(product.slug)}
+            >
+              {/* Product Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af2176';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute top-4 right-4 bg-pink-500/20 backdrop-blur-sm rounded-full p-2">
+                  <div className="text-pink-400">
+                    {product.icon}
                   </div>
-                  
-                  {/* Floating Icon */}
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                    className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full flex items-center justify-center shadow-xl"
-                  >
-                    <div className="text-white">
-                      {products[currentSlide].icon}
-                    </div>
-                  </motion.div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                <div className="absolute bottom-4 left-4">
+                  <span className="bg-pink-500/20 backdrop-blur-sm text-pink-400 text-xs px-2 py-1 rounded-full">
+                    {product.category}
+                  </span>
+                </div>
+              </div>
 
-          {/* Indicators */}
-          <div className="flex justify-center space-x-2 mt-8 flex-wrap">
-            {products.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors m-1 ${
-                  index === currentSlide ? 'bg-pink-500' : 'bg-white/30'
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* Product counter */}
-          <div className="text-center mt-4">
-            <span className="text-white/60 text-sm">
-              {currentSlide + 1} / {products.length}
-            </span>
-          </div>
+              {/* Product Content */}
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-pink-400 transition-colors">
+                  {product.title}
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                  {product.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-pink-400 font-semibold text-sm">
+                    ПОДРОБНЕЕ
+                  </span>
+                  <ArrowRight className="text-pink-400 group-hover:translate-x-1 transition-transform" size={16} />
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
