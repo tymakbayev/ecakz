@@ -489,8 +489,12 @@ export const Services = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             <span className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">УСЛУГИ</span>
           </h2>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Комплексные IT-услуги для развития вашего бизнеса
+          </p>
         </motion.div>
 
+        {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <motion.div
@@ -498,16 +502,16 @@ export const Services = () => {
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="bg-gradient-to-br from-slate-800/50 to-blue-800/50 backdrop-blur-sm rounded-xl p-6 border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300"
+              whileHover={{ scale: 1.05, y: -10 }}
+              className="bg-gradient-to-br from-slate-800/50 to-blue-800/50 backdrop-blur-sm rounded-xl p-6 border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300 group"
             >
-              <div className="text-pink-500 mb-4">
+              <div className="text-pink-500 mb-4 group-hover:scale-110 transition-transform duration-300">
                 {service.icon}
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">
+              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-pink-400 transition-colors">
                 {service.title}
               </h3>
-              <p className="text-gray-300 leading-relaxed">
+              <p className="text-gray-300 leading-relaxed text-sm">
                 {service.description}
               </p>
             </motion.div>
