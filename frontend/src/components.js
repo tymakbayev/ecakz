@@ -479,6 +479,49 @@ export const Clients = () => {
     { number: '100%', label: 'КАЧЕСТВО РЕШЕНИЙ' }
   ];
 
+  const clientLogos = [
+    {
+      name: 'Bing',
+      logo: 'https://images.unsplash.com/photo-1662052955098-042b46e60c2b',
+      alt: 'Bing Logo'
+    },
+    {
+      name: 'Google Shopping',
+      logo: 'https://images.unsplash.com/photo-1663124178667-28b3776d7c15',
+      alt: 'Google Shopping Logo'
+    },
+    {
+      name: 'Chevrolet',
+      logo: 'https://images.unsplash.com/photo-1580422605366-cfb9b577b361',
+      alt: 'Chevrolet Logo'
+    },
+    {
+      name: 'Adidas',
+      logo: 'https://images.pexels.com/photos/28993050/pexels-photo-28993050.jpeg',
+      alt: 'Adidas Logo'
+    },
+    {
+      name: 'Corporate Partners',
+      logo: 'https://images.pexels.com/photos/10958532/pexels-photo-10958532.jpeg',
+      alt: 'Corporate Partners'
+    },
+    {
+      name: 'Subway',
+      logo: 'https://images.pexels.com/photos/10121376/pexels-photo-10121376.jpeg',
+      alt: 'Subway Logo'
+    },
+    {
+      name: 'NBA',
+      logo: 'https://images.pexels.com/photos/12602144/pexels-photo-12602144.jpeg',
+      alt: 'NBA Logo'
+    },
+    {
+      name: 'AutoZone',
+      logo: 'https://images.unsplash.com/photo-1676870421337-2b9c65190264',
+      alt: 'AutoZone Logo'
+    }
+  ];
+
   return (
     <section id="clients" className="py-20 bg-gradient-to-b from-slate-900 to-blue-900">
       <div className="container mx-auto px-4 lg:px-8">
@@ -496,7 +539,8 @@ export const Clients = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -505,7 +549,7 @@ export const Clients = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center"
             >
-              <div className="text-6xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-2">
+              <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-2">
                 {stat.number}
               </div>
               <div className="text-white font-semibold text-sm">
@@ -513,6 +557,68 @@ export const Clients = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Client Logos */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-8"
+        >
+          <h3 className="text-2xl font-bold text-white text-center mb-8">
+            Нам доверяют
+          </h3>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8">
+            {clientLogos.map((client, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300 group"
+              >
+                <div className="relative h-20 flex items-center justify-center">
+                  <img 
+                    src={client.logo}
+                    alt={client.alt}
+                    className="max-h-full max-w-full object-contain filter brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-300"
+                    onError={(e) => {
+                      // Fallback to placeholder
+                      e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMTIwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik02MCAzMEMyNiAzMCAzMCAyNiAzMCA2MFMzNCA5MCA2MCA5MFM5MCA2NCA5MCAzMFM4NiAzMCA2MCAzMFoiIGZpbGw9IiNFMzI1ODAiLz4KPC9zdmc+Cg==';
+                    }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Scrolling client logos animation */}
+        <div className="overflow-hidden">
+          <motion.div
+            animate={{ x: [0, -1000] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="flex space-x-8 whitespace-nowrap"
+          >
+            {[...clientLogos, ...clientLogos].map((client, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-32 h-16 bg-white/5 rounded-lg flex items-center justify-center"
+              >
+                <img 
+                  src={client.logo}
+                  alt={client.alt}
+                  className="max-h-10 max-w-full object-contain opacity-50 hover:opacity-100 transition-opacity"
+                  onError={(e) => {
+                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMTIwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik02MCAzMEMyNiAzMCAzMCAyNiAzMCA2MFMzNCA5MCA2MCA5MFM5MCA2NCA5MCAzMFM4NiAzMCA2MCAzMFoiIGZpbGw9IiNFMzI1ODAiLz4KPC9zdmc+Cg==';
+                  }}
+                />
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
